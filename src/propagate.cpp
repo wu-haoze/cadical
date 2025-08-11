@@ -190,6 +190,7 @@ void Internal::search_assume_decision (int lit) {
   new_trail_level (lit);
   notify_decision ();
   LOG ("search decide %d", lit);
+  if (opts.cubing) learner.record_decision(externalize(lit));
   search_assign (lit, decision_reason);
 }
 

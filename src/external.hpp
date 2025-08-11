@@ -331,7 +331,7 @@ struct External {
   void reset_constraint ();
 
   /*----------------------------------------------------------------------*/
-
+	void pop_cubes(std::vector<std::vector<int>> &cubes);
   int lookahead ();
   CaDiCaL::CubesWithStatus generate_cubes (int, int);
 

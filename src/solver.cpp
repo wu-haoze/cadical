@@ -714,6 +714,10 @@ int Solver::solve () {
   return res;
 }
 
+	void Solver::pop_cubes (std::vector<std::vector<int>> &cubes) {
+		external->pop_cubes (cubes);
+	}
+
 int Solver::simplify (int rounds) {
   TRACE ("simplify", rounds);
   REQUIRE_READY_STATE ();

@@ -515,6 +515,11 @@ int External::solve (bool preprocess_only) {
   return res;
 }
 
+	void External::pop_cubes (std::vector<std::vector<int>> &cubes) {
+		internal->pop_cubes(cubes);
+	}
+
+
 void External::terminate () { internal->terminate (); }
 
 int External::lookahead () {

@@ -112,6 +112,10 @@ bool Internal::limit (const char *name, int l) {
     limit_preprocessing (l);
   else if (!strcmp (name, "localsearch"))
     limit_local_search (l);
+  else if (!strcmp (name, "cubeconflictlim"))
+  {
+	  opts.cubeconflictlim = l;
+  }
   else
     res = false;
   return res;

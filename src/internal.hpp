@@ -100,6 +100,7 @@ extern "C" {
 #include "version.hpp"
 #include "vivify.hpp"
 #include "watch.hpp"
+#include "learner.hpp"
 
 /*------------------------------------------------------------------------*/
 
@@ -265,6 +266,7 @@ struct Internal {
 
   Options opts; // run-time options
   Stats stats;  // statistics
+	SelfLearner learner;
 #ifndef QUIET
   Profiles profiles;         // time profiles for various functions
   bool force_phase_messages; // force 'phase (...)' messages
@@ -613,7 +615,7 @@ struct Internal {
   //
   void unassign (int lit);
   void update_target_and_best ();
-  void backtrack (int target_level = 0);
+  void backtrack (int target_level = 0, bool from_conflict = false);
 
   // Minimized learned clauses in 'minimize.cpp'.
   //
@@ -723,6 +725,8 @@ struct Internal {
   bool terminated_asynchronously (int factor = 1);
 
   bool search_limits_hit ();
+
+	int number_of_conflicts () const;
 
   void terminate () {
     LOG ("forcing asynchronous termination");
@@ -1201,6 +1205,7 @@ struct Internal {
   int local_search ();
   int lucky_phases ();
   int cdcl_loop_with_inprocessing ();
+	void pop_cubes(std::vector<std::vector<int>> &cubes);
   void reset_solving ();
   int solve (bool preprocess_only = false);
   void finalize (int);
@@ -1561,6 +1566,12 @@ inline bool Internal::search_limits_hit () {
 }
 
 /*------------------------------------------------------------------------*/
+
+	inline int Internal::number_of_conflicts () const
+	{
+		return stats.conflicts;
+	}
+
 
 } // namespace CaDiCaL
 

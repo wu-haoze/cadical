@@ -904,7 +904,7 @@ void Internal::analyze () {
       // to 'conflict_level-1', which is more in the spirit of chronological
       // backtracking anyhow and thus we also do the latter.
       //
-      backtrack (conflict_level - 1);
+      backtrack (conflict_level - 1, true);
 
       // if we are on decision level 0 search assign will learn unit
       // so we need a valid chain here (of course if we are not on decision
@@ -931,7 +931,7 @@ void Internal::analyze () {
     // analysis, which however requires to pass it to the 'analyze_reason'
     // and 'analyze_literal' functions.
     //
-    backtrack (conflict_level);
+    backtrack (conflict_level, true);
   }
 
   // Actual conflict on root level, thus formula unsatisfiable.
@@ -1014,7 +1014,7 @@ void Internal::analyze () {
         const int conflict_level = otfs_find_backtrack_level (forced);
         int new_level = determine_actual_backtrack_level (conflict_level);
         UPDATE_AVERAGE (averages.current.level, new_level);
-        backtrack (new_level);
+        backtrack (new_level, true);
 
         LOG ("forcing %d", forced);
         search_assign_driving (forced, conflict);
@@ -1129,7 +1129,7 @@ void Internal::analyze () {
 
   int new_level = determine_actual_backtrack_level (jump);
   UPDATE_AVERAGE (averages.current.level, new_level);
-  backtrack (new_level);
+  backtrack (new_level, true);
 
   // It should hold that (!level <=> size == 1)
   //                 and (!uip   <=> size == 0)

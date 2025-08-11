@@ -286,6 +286,9 @@ public:
   //
   int solve ();
 
+	void pop_cubes (std::vector<std::vector<int>> &cubes);
+	int number_of_conflicts ();
+
   // Get value (-lit=false, lit=true) of valid non-zero literal.
   //
   //   require (SATISFIED)

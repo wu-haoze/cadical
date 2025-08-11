@@ -73,7 +73,7 @@ void Internal::update_target_and_best () {
 
 /*------------------------------------------------------------------------*/
 
-void Internal::backtrack (int new_level) {
+void Internal::backtrack (int new_level, bool from_conflict) {
 
   assert (new_level <= level);
   if (new_level == level)
@@ -88,8 +88,27 @@ void Internal::backtrack (int new_level) {
 
   LOG ("backtracking to decision level %d with decision %d and trail %zd",
        new_level, control[new_level].decision, assigned);
+  std::cout << "Number of conflicts" << stats.conflicts << std::endl;
+
 
   const size_t end_of_trail = trail.size ();
+
+  if (opts.cubing and from_conflict) {
+	  int l = new_level + 1;
+	  for (; l <= level; ++l){
+		  learner.pop_decision(externalize(control[l].decision));
+
+		  if (learner.should_cube()) {
+			  for (int ll = 1; ll <= l; ++ll) {
+				  learner.add_to_working_cube(externalize(control[ll].decision));
+			  }
+			  std::cout << "Subproblem extracted!" << std::endl;
+			  lim.conflicts = stats.conflicts;
+			  break;
+		  }
+	  }
+  }
+
   size_t i = assigned, j = i;
 
 #ifdef LOGGING

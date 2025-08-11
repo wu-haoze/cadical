@@ -21,7 +21,7 @@ Internal::Internal ()
       propagated2 (0), propergated (0), best_assigned (0),
       target_assigned (0), no_conflict_until (0), unsat_constraint (false),
       marked_failed (true), num_assigned (0), proof (0), lratbuilder (0),
-      opts (this),
+      opts (this), learner (this),
 #ifndef QUIET
       profiles (this), force_phase_messages (false),
 #endif
@@ -263,12 +263,17 @@ int Internal::cdcl_loop_with_inprocessing () {
           analyze ();
       } else if (satisfied ())
         res = 10;
-    } else if (search_limits_hit ())
-      break;                               // decision or conflict limit
+    } else if (search_limits_hit ()) {
+		learner.finalize_cube();
+		break;                               // decision or conflict limit
+	}
     else if (terminated_asynchronously ()) // externally terminated
       break;
     else if (restarting ())
-      restart (); // restart by backtracking
+	{
+      restart (); // restart by backtrackin
+	  learner.reset();
+	}
     else if (rephasing ())
       rephase (); // reset variable phases
     else if (reducing ())
@@ -299,6 +304,14 @@ int Internal::cdcl_loop_with_inprocessing () {
 
   return res;
 }
+
+void Internal::pop_cubes (std::vector<std::vector<int>> &cubes) {
+	for (const auto &cube : learner._cubes) {
+		cubes.push_back(cube);
+	}
+	learner.reset();
+}
+
 
 /*------------------------------------------------------------------------*/
 
