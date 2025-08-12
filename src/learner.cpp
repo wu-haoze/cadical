@@ -17,7 +17,7 @@ namespace CaDiCaL {
 			_internal->number_of_conflicts() - _lit_to_conflicts[lit] >= _internal->opts.cubeconflictlim) {
 			_should_cube = true;
 		}
-		std::cout << _internal->number_of_conflicts() << " " << _lit_to_conflicts[lit] << " " <<  _internal->opts.cubeconflictlim << std::endl;
+		//std::cout << _internal->number_of_conflicts() << " " << _lit_to_conflicts[lit] << " " <<  _internal->opts.cubeconflictlim << std::endl;
 		_lit_to_conflicts.erase(lit);
 	}
 

@@ -88,7 +88,7 @@ void Internal::backtrack (int new_level, bool from_conflict) {
 
   LOG ("backtracking to decision level %d with decision %d and trail %zd",
        new_level, control[new_level].decision, assigned);
-  std::cout << "Number of conflicts" << stats.conflicts << std::endl;
+  //std::cout << "Number of conflicts" << stats.conflicts << std::endl;
 
 
   const size_t end_of_trail = trail.size ();
